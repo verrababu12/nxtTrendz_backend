@@ -9,7 +9,11 @@ const UsersModel = require("./module/Users");
 dotenv.config();
 
 app.use(express.json());
-app.use(cors());
+
+// Allow all origins or specify certain origins:
+app.use(
+  cors({ origin: "https://veerababu7cpu3rjscpfoqqb.drops.nxtwave.tech" })
+);
 // app.use((req, res, next) => {
 //   res.setHeader("Access-Control-Allow-Origin", "*");
 //   next();
