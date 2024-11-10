@@ -34,10 +34,10 @@ app.get("/", async (req, res) => {
 app.post("/register", async (req, res) => {
   const { username, name, email, password } = req.body;
 
-  // Check if the password is provided
-  if (!password || password.trim() === "") {
-    return res.status(400).json("Password is required");
-  }
+  // // Check if the password is provided
+  // if (!password || password.trim() === "") {
+  //   return res.status(400).json("Password is required");
+  // }
 
   // Check if the user already exists
   const checkUser = await UsersModel.findOne({ username: username });
