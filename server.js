@@ -33,20 +33,36 @@ app.get("/", async (req, res) => {
 
 app.post("/register", async (req, res) => {
   const { username, name, email, password } = req.body;
+
+  // Check if the password is provided
+  if (!password || password.trim() === "") {
+    return res.status(400).json("Password is required");
+  }
+
+  // Check if the user already exists
   const checkUser = await UsersModel.findOne({ username: username });
   if (checkUser) {
-    res.status(400);
-    res.json("User already exists");
-  } else {
+    return res.status(400).json("User already exists");
+  }
+
+  try {
+    // Hash the password using bcrypt
     const hashedPassword = await bcrypt.hash(password, 10);
-    UsersModel.insertMany({
+
+    // Insert the user into the database
+    await UsersModel.insertMany({
       username,
       name,
       email,
       password: hashedPassword,
     });
-    res.status(200);
-    res.json("User Created Successfully");
+
+    // Respond with success
+    res.status(200).json("User Created Successfully");
+  } catch (error) {
+    // Handle errors if something goes wrong
+    console.error(error);
+    res.status(500).json("Internal Server Error");
   }
 });
 
